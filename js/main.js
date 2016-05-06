@@ -248,6 +248,8 @@
 			});
 
 			plugin.$field.val( ids.join(',') );
+
+			$( document ).trigger( 'updatePostfinder', plugin.$field );
 		}
 
 		plugin.init();

@@ -69,6 +69,12 @@
 				}
 			});
 
+			// Search on keyup (debounced).
+			plugin.$search.on( 'keyup', function( e ) {
+				e.preventDefault();
+				plugin.debouncedSearch();
+			} );
+
 			// bind list
 			plugin.$list.sortable({
 				placeholder: 'placeholder',
@@ -102,6 +108,12 @@
 			plugin.$list.on('blur', 'li input', function(e){
 				plugin.move_item( $(this).closest('li'), $(this).val() );
 			});
+
+			// Disable adding items when the maximum has been reached already.
+			if( plugin.$list.find('li').length >= ( $element.data('limit') -1 ) ) {
+				plugin.disableInputs();
+			}
+
 		};
 
 		// move an element to a specific position if possible
@@ -148,6 +160,16 @@
 
 		};
 
+		plugin.disableInputs = function() {
+			plugin.$search.find( 'input, button' ).prop( 'disabled', true );
+			plugin.$select.prop( 'disabled', true );
+		}
+
+		plugin.enableInputs = function() {
+			plugin.$search.find( 'input, button' ).prop( 'disabled', false );
+			plugin.$select.prop( 'disabled', false );
+		}
+
 		plugin.add_item = function( id, title, permalink ) {//private method
 
 			var template = _.template( plugin.settings.template );
@@ -156,9 +178,8 @@
 			if( id == 0 )
 				return;
 
-			if( plugin.$list.find('li').length >= $element.data('limit') ) {
-				alert( POST_FINDER_CONFIG.max_number_allowed );
-				return;
+			if( plugin.$list.find('li').length >= ( $element.data('limit') -1 ) ) {
+				plugin.disableInputs();
 			}
 
 			// see if item already exists
@@ -188,6 +209,9 @@
 
 		//Prv method to remove an item
 		plugin.remove_item = function( id ) {
+
+			// After removing an item, ensure imputs enabled.
+			plugin.enableInputs();
 
 			plugin.$list.find('li[data-id="' + id + '"]').remove();
 
@@ -236,6 +260,8 @@
 				}
 			);
 		};
+
+		plugin.debouncedSearch = _.debounce( plugin.search, 250 );
 
 		plugin.serialize = function() {
 

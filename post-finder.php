@@ -274,20 +274,9 @@ class NS_Post_Finder {
 				?>
 			</ul>
 
-			<?php if( $recent_posts ) : ?>
-			<h4>Select a Recent <?php echo esc_html( $singular ); ?></h4>
-			<select>
-				<option value="0">Choose <?php echo esc_html( $singular_article ) . ' ' . esc_html( $singular ); ?></option>
-				<?php foreach( $recent_posts as $post ) : ?>
-				<option value="<?php echo intval( $post->ID ); ?>" data-permalink="<?php echo esc_attr( get_permalink( $post->ID ) ); ?>"><?php echo esc_html( apply_filters( 'post_finder_item_label', $post->post_title, $post ) ); ?></option>
-				<?php endforeach; ?>
-			</select>
-			<?php endif; ?>
-
 			<div class="search">
-				<h4>Search for <?php echo esc_html( $singular_article ) . ' ' . esc_html( $singular ); ?></h4>
+				<h3>Choose or search for <?php echo esc_html( $singular_article ) . ' ' . esc_html( $singular ); ?></h3>
 				<input type="text" placeholder="Enter a term or phrase">
-				<button class="button">Search</button>
 				<ul class="results"></ul>
 			</div>
 		</div>

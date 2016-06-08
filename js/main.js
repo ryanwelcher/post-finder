@@ -112,6 +112,8 @@
 			// Disable adding items when the maximum has been reached already.
 			if( plugin.$list.find('li').length >= ( $element.data('limit') -1 ) ) {
 				plugin.disableInputs();
+			} else {
+				plugin.search();
 			}
 
 		};

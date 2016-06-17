@@ -163,8 +163,11 @@
 		};
 
 		plugin.disableInputs = function() {
-			plugin.$search.find( 'input, button' ).prop( 'disabled', true );
+			plugin.$search.find( 'input, button' ).prop( 'disabled', true ).val( '' );
 			plugin.$select.prop( 'disabled', true );
+
+			// Remove any existing search results.
+			plugin.$results.find( 'li' ).remove();
 		}
 
 		plugin.enableInputs = function() {

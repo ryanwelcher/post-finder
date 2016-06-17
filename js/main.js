@@ -183,14 +183,8 @@
 			if( id == 0 )
 				return;
 
-			if( plugin.$list.find('li').length >= ( $element.data('limit') -1 ) ) {
+			if( plugin.$list.find('li').length >= ( $element.data('limit') - 1 ) ) {
 				plugin.disableInputs();
-			}
-
-			// see if item already exists
-			if( plugin.$list.find('li[data-id="' + id + '"]').length ) {
-				alert( POST_FINDER_CONFIG.already_added );
-				return;
 			}
 
 			// add item

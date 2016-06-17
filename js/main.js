@@ -228,6 +228,7 @@
 				data = {
 					action: 'pf_search_posts',
 					s: plugin.$query.val(),
+					not_in: plugin.$field.val(),
 					_ajax_nonce: plugin.nonce
 				},
 				template = _.template( itemTemplate );

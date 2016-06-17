@@ -94,6 +94,7 @@
 				e.preventDefault();
 				$li = $(this).closest('li');
 				plugin.add_item( $li.data('id'), $li.find('span').text(), $li.data('permalink') );
+				$li.remove();
 			});
 
 			// bind number inputs

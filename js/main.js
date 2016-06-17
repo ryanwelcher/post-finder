@@ -174,6 +174,7 @@
 		plugin.enableInputs = function() {
 			plugin.$search.find( 'input, button' ).prop( 'disabled', false );
 			plugin.$select.prop( 'disabled', false );
+			plugin.search();
 		}
 
 		plugin.add_item = function( id, title, permalink ) {//private method

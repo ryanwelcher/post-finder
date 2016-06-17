@@ -325,6 +325,14 @@ class NS_Post_Finder {
 			}
 		}
 
+		// Exclude already selected posts.
+		if( isset( $_POST['not_in'] ) && '' !== $_POST['not_in'] ) {
+
+			// Sanitize.
+			$not_in = explode( ',', sanitize_text_field( $_POST['not_in'] ) );
+			$args['post__not_in'] = $not_in;
+		}
+
 		// this needs to be within a range
 		if( isset( $_POST['posts_per_page'] ) ) {
 

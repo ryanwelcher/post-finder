@@ -107,7 +107,7 @@ class NS_Post_Finder {
 	 */
 	private function render_js_templates() {
 		$main_template =
-			'<li data-id="<%= id %>">
+			'<li data-id="<%= id %>" data-type="<%= post_type %>">
 				<input type="text" size="3" maxlength="3" max="3" value="<%= pos %>">
 				<span><%= title %></span>
 				<nav>
@@ -118,7 +118,7 @@ class NS_Post_Finder {
 			</li>';
 
 		$item_template =
-			'<li data-id="<%= ID %>" data-permalink="<%= permalink %>">
+			'<li data-type="<%= post_type %>" data-id="<%= ID %>" data-permalink="<%= permalink %>" >
 				<a href="#" class="add">Add</a>
 				<span><%= post_title %></span>
 			</li>';
@@ -129,6 +129,7 @@ class NS_Post_Finder {
 		$allowed_html = array(
 			'li' => array(
 				'data-id' => true,
+				'data-type' => true,
 				'data-permalink' => true,
 			),
 			'input' => array(
@@ -242,7 +243,8 @@ class NS_Post_Finder {
 
 		?>
 		<div class="<?php echo esc_attr( $class ); ?>" data-limit="<?php echo intval( $options['limit'] ); ?>" data-args='<?php echo wp_json_encode( $args ); ?>'>
-			<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
+			<input type="hidden" id="ids" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
+			<input type="hidden" id="types" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
 			<ul class="list">
 				<?php
 
@@ -250,7 +252,7 @@ class NS_Post_Finder {
 					$i = 1;
 					foreach( $posts as $post ) {
 						printf(
-							'<li data-id="%s">' .
+							'<li data-id="%s" data-type="%s">' .
 								'<input type="text" size="3" maxlength="3" max="3" value="%s">' .
 								'<span>%s</span>' .
 								'<nav>' .
@@ -260,6 +262,7 @@ class NS_Post_Finder {
 								'</nav>' .
 							'</li>',
 							intval( $post->ID ),
+							esc_html( get_post_type( $post->ID ) ),
 							intval( $i ),
 							esc_html( apply_filters( 'post_finder_item_label', $post->post_title, $post ) ),
 							esc_url( get_edit_post_link( $post->ID ) ),

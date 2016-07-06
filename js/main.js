@@ -19,14 +19,15 @@
 		}
 
 		defaults = {
-			template:        mainTemplate,
-			fieldSelector:   'input[type=hidden]',
-			selectSelector:  'select',
-			listSelector:    '.list',
-			searchSelector:  '.search',
-			resultsSelector: '.results',
-			querySelector:   'input[type=text]',
-			nonceSelector:   '#post_finder_nonce'
+			template:           mainTemplate,
+			fieldSelector:      'input#ids[type=hidden]',
+			typesfieldSelector: 'input#types[type=hidden]',
+			selectSelector:     'select',
+			listSelector:       '.list',
+			searchSelector:     '.search',
+			resultsSelector:    '.results',
+			querySelector:      'input[type=text]',
+			nonceSelector:      '#post_finder_nonce'
 		};
 
 		var plugin = this;
@@ -42,13 +43,14 @@
 			plugin.settings = $.extend({}, defaults, options);
 
 			// all jquery objects are fetched once and stored in the plugin object
-			plugin.$field   = $element.find(plugin.settings.fieldSelector),
-			plugin.$select  = $element.find(plugin.settings.selectSelector),
-			plugin.$list    = $element.find(plugin.settings.listSelector),
-			plugin.$search  = $element.find(plugin.settings.searchSelector),
-			plugin.$results = plugin.$search.find(plugin.settings.resultsSelector),
-			plugin.$query   = plugin.$search.find(plugin.settings.querySelector),
-			plugin.nonce    = $(plugin.settings.nonceSelector).val();
+			plugin.$field     = $element.find(plugin.settings.fieldSelector),
+			plugin.$typefield = $element.find(plugin.settings.typesfieldSelector),
+			plugin.$select    = $element.find(plugin.settings.selectSelector),
+			plugin.$list      = $element.find(plugin.settings.listSelector),
+			plugin.$search    = $element.find(plugin.settings.searchSelector),
+			plugin.$results   = plugin.$search.find(plugin.settings.resultsSelector),
+			plugin.$query     = plugin.$search.find(plugin.settings.querySelector),
+			plugin.nonce      = $(plugin.settings.nonceSelector).val();
 
 			// bind select
 			plugin.$select.on('change', function(e){
@@ -93,7 +95,12 @@
 			plugin.$results.on('click', '.add', function(e){
 				e.preventDefault();
 				$li = $(this).closest('li');
-				plugin.add_item( $li.data('id'), $li.find('span').text(), $li.data('permalink') );
+				plugin.add_item(
+					$li.data('id'),
+					$li.find('span').text(),
+					$li.data('permalink'),
+					$li.data('type')
+				);
 				$li.remove();
 			});
 
@@ -177,7 +184,7 @@
 			plugin.search();
 		}
 
-		plugin.add_item = function( id, title, permalink ) {//private method
+		plugin.add_item = function( id, title, permalink, postType ) {//private method
 
 			var template = _.template( plugin.settings.template );
 
@@ -193,6 +200,7 @@
 			plugin.$list.append( template( {
 				id:        id,
 				title:     title,
+				post_type: postType,
 				edit_url:  POST_FINDER_CONFIG.adminurl + 'post.php?post=' + id + '&action=edit',
 				permalink: permalink,
 				pos:       plugin.$list.length + 1
@@ -217,6 +225,9 @@
 			plugin.$list.find('li[data-id="' + id + '"]').remove();
 
 			plugin.serialize();
+
+			// Re search after removing.
+			plugin.search();
 
 			// show notice if no posts
 			if( plugin.$list.find('li').length == 0 ) {
@@ -267,17 +278,24 @@
 
 		plugin.serialize = function() {
 
-			var ids = [], i = 1;
+			var ids = [],
+				types = [],
+				i = 1;
 
 			plugin.$list.find('li').each(function(){
 				$(this).find('input').val(i);
 				ids.push( $(this).data('id') );
+				types.push( $(this).data('type') );
 				i++;
 			});
 
 			plugin.$field.val( ids.join(',') );
+			plugin.$typefield.val( types.join(',') );
 
-			$( document ).trigger( 'updatePostfinder', plugin.$field );
+			$( document ).trigger( 'updatePostfinder', {
+				'idField': plugin.$field,
+				'typeField': plugin.$typefield
+			} );
 		}
 
 		plugin.init();

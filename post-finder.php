@@ -244,7 +244,7 @@ class NS_Post_Finder {
 		?>
 		<div class="<?php echo esc_attr( $class ); ?>" data-limit="<?php echo intval( $options['limit'] ); ?>" data-args='<?php echo wp_json_encode( $args ); ?>'>
 			<input type="hidden" id="ids" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
-			<input type="hidden" id="types" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( $value ); ?>">
+			<input type="hidden" id="types" name="<?php echo esc_attr( $name ); ?>_types" value="<?php echo esc_attr( $value ); ?>">
 			<ul class="list">
 				<?php
 

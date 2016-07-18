@@ -313,6 +313,7 @@ class NS_Post_Finder {
 			's',
 			'post_parent',
 			'post_status',
+			'post_mime_type',
 		);
 
 		$args = array();

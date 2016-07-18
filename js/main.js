@@ -261,6 +261,10 @@
 						if( typeof response.posts != "undefined" ) {
 							if ( response.posts.length > 0 ) {
 								for( var i in response.posts ) {
+									// For attachments, append the filename part of the guid to the displayed title.
+									if ( 'attachment' === response.posts[i]['post_type'] ) {
+										response.posts[i]['post_title'] += ' (' + response.posts[i]['guid'].split( '/' ).pop().split('?')[0]  + ')';
+									}
 									html += template( response.posts[i] );
 								}
 							} else {

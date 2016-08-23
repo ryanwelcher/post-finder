@@ -119,7 +119,7 @@
 
 			// Disable adding items when the maximum has been reached already.
 			if( plugin.$list.find('li').length >= ( $element.data('limit') ) ) {
-				plugin.disableInputs();
+				plugin.disableSearch();
 			} else {
 				plugin.search();
 			}
@@ -170,18 +170,12 @@
 
 		};
 
-		plugin.disableInputs = function() {
-			plugin.$search.find( 'input, button' ).prop( 'disabled', true ).val( '' );
-			plugin.$select.prop( 'disabled', true );
-
-			// Remove any existing search results.
-			plugin.$results.find( 'li' ).remove();
+		plugin.disableSearch = function() {
+			plugin.$search.addClass( 'hidden' );
 		}
 
-		plugin.enableInputs = function() {
-			plugin.$search.find( 'input, button' ).prop( 'disabled', false );
-			plugin.$select.prop( 'disabled', false );
-			plugin.search();
+		plugin.enableSearch = function() {
+			plugin.$search.removeClass( 'hidden' );
 		}
 
 		plugin.add_item = function( id, title, permalink, postType ) {//private method
@@ -193,7 +187,7 @@
 				return;
 
 			if( plugin.$list.find('li').length >= ( $element.data('limit') - 1 ) ) {
-				plugin.disableInputs();
+				plugin.disableSearch();
 			}
 
 			// add item
@@ -220,7 +214,7 @@
 		plugin.remove_item = function( id ) {
 
 			// After removing an item, ensure imputs enabled.
-			plugin.enableInputs();
+			plugin.enableSearch();
 
 			plugin.$list.find('li[data-id="' + id + '"]').remove();
 

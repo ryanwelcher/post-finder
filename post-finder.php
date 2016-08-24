@@ -282,6 +282,9 @@ class NS_Post_Finder {
 				<input type="text" placeholder="Enter a term or phrase">
 				<ul class="results"></ul>
 			</div>
+			<div class="search-full hidden">
+				<strong>Area full: remove an item to add a new one.</strong>
+			</div>
 		</div>
 		<?php
 		if ( $options['include_script'] ) {

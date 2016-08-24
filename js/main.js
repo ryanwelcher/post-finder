@@ -25,6 +25,7 @@
 			selectSelector:     'select',
 			listSelector:       '.list',
 			searchSelector:     '.search',
+			searchFull:         '.search-full',
 			resultsSelector:    '.results',
 			querySelector:      'input[type=text]',
 			nonceSelector:      '#post_finder_nonce'
@@ -48,6 +49,7 @@
 			plugin.$select    = $element.find(plugin.settings.selectSelector),
 			plugin.$list      = $element.find(plugin.settings.listSelector),
 			plugin.$search    = $element.find(plugin.settings.searchSelector),
+			plugin.$searchFull = $element.find(plugin.settings.searchFull),
 			plugin.$results   = plugin.$search.find(plugin.settings.resultsSelector),
 			plugin.$query     = plugin.$search.find(plugin.settings.querySelector),
 			plugin.nonce      = $(plugin.settings.nonceSelector).val();
@@ -172,10 +174,12 @@
 
 		plugin.disableSearch = function() {
 			plugin.$search.addClass( 'hidden' );
+			plugin.$searchFull.removeClass( 'hidden' );
 		}
 
 		plugin.enableSearch = function() {
 			plugin.$search.removeClass( 'hidden' );
+			plugin.$searchFull.addClass( 'hidden' );
 		}
 
 		plugin.add_item = function( id, title, permalink, postType ) {//private method
